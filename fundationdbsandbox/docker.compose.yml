@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  foundationdb:
+    image: foundationdb/foundationdb:7.3.69
+    container_name: fdb
+    hostname: fdb
+    ports:
+      - "4500:4500"
+    volumes:
+      - fdb_data:/var/fdb/data
+    environment:
+      FDB_COORDINATOR: "fdb"
+    command: >
+      bash -c "
+        fdbserver --cluster_file /var/fdb/fdb.cluster
+                  --datadir /var/fdb/data
+                  --listen_address 0.0.0.0:4500
+                  --public_address fdb:4500
+                  --logdir /var/fdb/logs
+      "
+
+volumes:
+  fdb_data:
